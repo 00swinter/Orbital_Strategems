@@ -1,0 +1,11 @@
+{
+    "name": "Orbital_Strategems",
+    "version": "0.0.1",
+    "title": "Orbital Strategems",
+    "author": "00swinter",
+    "description": "Helldivers in Factorio omg playe deploy station on a spaceplattform in orbit and call in strategems to resupply reinforce or call airstrykes like in the Helldivers 2",
+    "factorio_version": "2.0",
+    "dependencies": [
+        "base >= 2.0.0"
+    ]
+}

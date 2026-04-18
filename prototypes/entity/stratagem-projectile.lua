@@ -3,19 +3,19 @@ data:extend({
     type = "projectile",
     name = "stratagem-projectile",
     flags = {"not-on-map"},
-    acceleration = 0.005,
+    acceleration = 0,
     action = {
       type = "direct",
       action_delivery = {
         type = "instant",
         target_effects = {
           {
-            type = "script",
-            effect_id = "trigger_pod_drop"
+              type = "script",
+              effect_id = "trigger_pod_drop"
           },
           {
-            type = "create-entity",
-            entity_name = "stratagem-entity",
+              type = "create-entity",
+              entity_name = "stratagem-entity",
           }
         }
       }

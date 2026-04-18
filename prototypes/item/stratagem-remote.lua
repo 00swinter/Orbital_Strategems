@@ -21,7 +21,7 @@ data:extend({
                         action_delivery = {
                             type = "projectile",
                             projectile = "stratagem-projectile",
-                            starting_speed = 0.005,
+                            starting_speed = 0.5,
                         }
                     }
                 }

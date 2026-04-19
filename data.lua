@@ -11,3 +11,9 @@ require("prototypes.animation.hellpod_smash")
 
 require("prototypes.trigger.trigger")
 
+require("prototypes.buildings.space-building")
+require("prototypes.item.space-building-item")
+
+require("prototypes.item.hellpod-item")
+require("prototypes.stratagems.mines.mines")
+

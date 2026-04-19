@@ -8,7 +8,6 @@ data:extend({
         scale = 0.6,
         frame_count = 15,
         line_length = 4,
-        animation_speed = 0.25,
         shift = {0, -7}
     }
 })

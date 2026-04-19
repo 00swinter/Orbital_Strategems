@@ -45,10 +45,16 @@ script.on_event(defines.events.on_script_trigger_effect, function(event)
                 speed = 1.9
             }
 
+            local frames = 15
+            local speed = 0.25
+            local offset = -(game.tick * speed) % frames
+
             rendering.draw_animation{
                 target = sentry_pod,
                 surface = current_surface,
                 animation = "hellpod_landing_animation",
+                animation_offset = offset,
+                animation_speed = speed,
                 render_layer = "air-object",
             }
         end
@@ -85,3 +91,49 @@ end)
 -- end
 
 -- script.on_event(defines.events.on_tick, tick());
+
+local minefield_deployer_name = "orbital-minefield-deployer"
+local minefield_projectile_name = "orbital-minefield-mine-projectile"
+local minefield_count = 24
+local minefield_radius = 10
+
+local function deploy_minefield(entity)
+    if not (entity and entity.valid) then return end
+    if entity.name ~= minefield_deployer_name then return end
+
+    local surface = entity.surface
+    local origin = entity.position
+
+    for i = 1, minefield_count do
+        local angle = (2 * math.pi) * (i - 1) / minefield_count
+        local target = {
+            x = origin.x + math.cos(angle) * minefield_radius,
+            y = origin.y + math.sin(angle) * minefield_radius
+        }
+
+        surface.create_entity{
+            name = minefield_projectile_name,
+            position = origin,
+            target = target,
+            speed = 0.3,
+            force = entity.force
+        }
+    end
+
+    surface.create_entity{
+        name = "big-explosion",
+        position = origin
+    }
+
+    entity.destroy()
+end
+
+local function on_entity_built(event)
+    local entity = event.entity or event.created_entity or event.destination
+    deploy_minefield(entity)
+end
+
+script.on_event(defines.events.on_built_entity, on_entity_built)
+script.on_event(defines.events.on_robot_built_entity, on_entity_built)
+script.on_event(defines.events.script_raised_built, on_entity_built)
+script.on_event(defines.events.script_raised_revive, on_entity_built)

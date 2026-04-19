@@ -19,5 +19,17 @@ data:extend({
             {type = "item", name = "iron-plate", amount = 2}
         },
         recipe_category = "basic-crafting"
+    },
+    {
+        type = "recipe",
+        name = "hellpod-recipe",
+        enable = true,
+        results = {
+            {type="item", name="hellpod-item", amount = 1}
+        },
+        ingredients = {
+            {type = "item", name = "iron-plate", amount = 50}
+        },
+        recipe_category = "basic-crafting"
     }
 })

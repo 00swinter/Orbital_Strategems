@@ -2,7 +2,7 @@ data:extend({
     {
         type = "delayed-active-trigger",
         name = "spawn-sentry-trigger",
-        delay = 600,
+        delay = 60,
         action = {
             type = "direct",
             action_delivery = {

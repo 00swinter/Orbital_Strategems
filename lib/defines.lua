@@ -26,6 +26,7 @@ d.id = {
   },
   item = {
     stratagem = id("item", "stratagem"),
+    stratagem_beacon = id("item", "stratagem-beacon"),
     stratagem_remote = id("item", "stratagem-remote"),
     hellpod = id("item", "hellpod"),
     space_building = id("item", "space-building"),
@@ -35,6 +36,7 @@ d.id = {
   recipe = {
     stratagem_remote = id("recipe", "stratagem-remote"),
     stratagem = id("recipe", "stratagem"),
+    stratagem_beacon = id("recipe", "stratagem-beacon"),
     hellpod = id("recipe", "hellpod"),
     incendiary_land_mine = id("recipe", "orbital-incendiary-land-mine"),
     minefield_deployer = id("recipe", "minefield-deployer")

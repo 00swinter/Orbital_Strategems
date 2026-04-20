@@ -1,5 +1,5 @@
-require("prototypes.items.stratagem")
-require("prototypes.items.stratagem_remote")
+require("prototypes.items.stratagem_remotes")
+require("prototypes.items.strategem_beacon")
 require("prototypes.items.space_building_item")
 require("prototypes.items.hellpod_item")
 

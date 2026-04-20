@@ -1,7 +1,8 @@
+local hd = require("lib.defines")
+
 data:extend({
-    {
-        type = "corpse",
-        name = "hellpod-corpse",
-        
-    }
+  {
+    type = "corpse",
+    name = hd.id.corpse.hellpod
+  }
 })

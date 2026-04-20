@@ -1,18 +1,19 @@
+local hd = require("lib.defines")
+
 data:extend({
   {
     type = "item",
-    name = "orbital-incendiary-land-mine",
+    name = hd.id.item.incendiary_land_mine,
     icon = "__base__/graphics/icons/land-mine.png",
     icon_size = 64,
     subgroup = "defensive-structure",
     order = "f[land-mine]-d[incendiary]",
-    place_result = "orbital-incendiary-land-mine",
+    place_result = hd.id.land_mine.incendiary,
     stack_size = 100
   },
-
   {
     type = "recipe",
-    name = "orbital-incendiary-land-mine",
+    name = hd.id.recipe.incendiary_land_mine,
     category = "chemistry",
     enabled = false,
     energy_required = 20,
@@ -23,17 +24,16 @@ data:extend({
       {type = "fluid", name = "heavy-oil", amount = 80}
     },
     results = {
-      {type = "item", name = "orbital-incendiary-land-mine", amount = 4}
+      {type = "item", name = hd.id.item.incendiary_land_mine, amount = 4}
     }
   },
-
   {
     type = "technology",
-    name = "orbital-incendiary-land-mine",
+    name = hd.id.technology.incendiary_land_mine,
     icon = "__base__/graphics/technology/land-mine.png",
     icon_size = 256,
     effects = {
-      {type = "unlock-recipe", recipe = "orbital-incendiary-land-mine"}
+      {type = "unlock-recipe", recipe = hd.id.recipe.incendiary_land_mine}
     },
     prerequisites = {"land-mine", "flamethrower"},
     unit = {
@@ -47,10 +47,9 @@ data:extend({
     },
     order = "e-e"
   },
-
   {
     type = "projectile",
-    name = "orbital-incendiary-fire-projectile",
+    name = hd.id.projectile.incendiary_fire,
     flags = {"not-on-map"},
     hidden = true,
     acceleration = 0.001,
@@ -75,10 +74,9 @@ data:extend({
       priority = "high"
     }
   },
-
   {
     type = "land-mine",
-    name = "orbital-incendiary-land-mine",
+    name = hd.id.land_mine.incendiary,
     icon = "__base__/graphics/icons/land-mine.png",
     icon_size = 64,
     flags = {
@@ -94,7 +92,7 @@ data:extend({
       "not-repairable",
       "not-blueprintable"
     },
-    minable = {mining_time = 0.5, result = "orbital-incendiary-land-mine"},
+    minable = {mining_time = 0.5, result = hd.id.item.incendiary_land_mine},
     create_ghost_on_death = false,
     alert_when_damaged = false,
     max_health = 15,
@@ -115,24 +113,19 @@ data:extend({
           distance_deviation = 2,
           action_delivery = {
             type = "projectile",
-            projectile = "orbital-incendiary-fire-projectile",
+            projectile = hd.id.projectile.incendiary_fire,
             direction_deviation = 0.7,
             starting_speed = 0.15,
             starting_speed_deviation = 0.2
           }
         }
       },
-      {
-        type = "show-explosion-on-chart",
-        scale = 0.25
-      }
+      {type = "show-explosion-on-chart", scale = 0.25}
     },
-
     collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
     selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
     trigger_radius = 2.5,
     ammo_category = "landmine",
-
     picture_safe = {
       filename = "__base__/graphics/entity/land-mine/land-mine.png",
       priority = "medium",
@@ -154,7 +147,6 @@ data:extend({
       height = 32,
       scale = 1
     },
-
     action = {
       type = "direct",
       action_delivery = {
@@ -165,8 +157,6 @@ data:extend({
             entity_name = "small-scorchmark",
             check_buildability = true
           },
-
-          -- Fire carpet: creates flames even on empty ground.
           {
             type = "nested-result",
             action = {
@@ -176,48 +166,44 @@ data:extend({
               distance_deviation = 2,
               action_delivery = {
                 type = "projectile",
-                projectile = "orbital-incendiary-fire-projectile",
+                projectile = hd.id.projectile.incendiary_fire,
                 direction_deviation = 0.7,
                 starting_speed = 0.15,
                 starting_speed_deviation = 0.2
               }
             }
           },
-
           {type = "show-explosion-on-chart", scale = 0.25}
         }
       }
     }
-  }
-})
-
-data:extend({
+  },
   {
     type = "item",
-    name = "orbital-minefield-deployer",
+    name = hd.id.item.minefield_deployer,
     icon = "__base__/graphics/icons/land-mine.png",
     icon_size = 64,
     subgroup = "defensive-structure",
     order = "f[land-mine]-z[minefield-deployer]",
-    place_result = "orbital-minefield-deployer",
+    place_result = hd.id.entity.minefield_deployer,
     stack_size = 20
   },
   {
     type = "recipe",
-    name = "orbital-minefield-deployer",
+    name = hd.id.recipe.minefield_deployer,
     enabled = false,
     energy_required = 2,
     ingredients = {
-      {type = "item", name = "orbital-incendiary-land-mine", amount = 16},
+      {type = "item", name = hd.id.item.incendiary_land_mine, amount = 16},
       {type = "item", name = "electronic-circuit", amount = 4}
     },
     results = {
-      {type = "item", name = "orbital-minefield-deployer", amount = 1}
+      {type = "item", name = hd.id.item.minefield_deployer, amount = 1}
     }
   },
   {
     type = "simple-entity",
-    name = "orbital-minefield-deployer",
+    name = hd.id.entity.minefield_deployer,
     icon = "__base__/graphics/icons/land-mine.png",
     icon_size = 64,
     flags = {
@@ -239,7 +225,7 @@ data:extend({
   },
   {
     type = "projectile",
-    name = "orbital-minefield-mine-projectile",
+    name = hd.id.projectile.minefield_mine,
     flags = {"not-on-map"},
     hidden = true,
     acceleration = 0.005,
@@ -251,7 +237,7 @@ data:extend({
           {
             type = "create-entity",
             show_in_tooltip = true,
-            entity_name = "orbital-incendiary-land-mine"
+            entity_name = hd.id.land_mine.incendiary
           }
         }
       }
@@ -266,11 +252,11 @@ data:extend({
   }
 })
 
-if data.raw.technology["orbital-incendiary-land-mine"] then
+if data.raw.technology[hd.id.technology.incendiary_land_mine] then
   table.insert(
-    data.raw.technology["orbital-incendiary-land-mine"].effects,
-    {type = "unlock-recipe", recipe = "orbital-minefield-deployer"}
+    data.raw.technology[hd.id.technology.incendiary_land_mine].effects,
+    {type = "unlock-recipe", recipe = hd.id.recipe.minefield_deployer}
   )
 else
-  data.raw.recipe["orbital-minefield-deployer"].enabled = true
+  data.raw.recipe[hd.id.recipe.minefield_deployer].enabled = true
 end

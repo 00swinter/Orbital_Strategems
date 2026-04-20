@@ -1,24 +1,26 @@
+local hd = require("lib.defines")
+
 data:extend({
   {
     type = "simple-entity",
-    name = "stratagem-entity",
-    icon = "__Orbital_Strategems__/graphics/icons/stratagem-item.png",
+    name = hd.id.entity.stratagem_marker,
+    icon = hd.mod_path .. "/graphics/icons/stratagem-item.png",
     icon_size = 64,
     flags = {
-      "placeable-neutral", 
-      "placeable-player", 
-      "placeable-off-grid", 
+      "placeable-neutral",
+      "placeable-player",
+      "placeable-off-grid",
       "no-copy-paste"
     },
     selection_box = {{-0.3, -0.3}, {0.3, 0.3}},
-    collision_box = {{0, 0}, {0, 0}};
+    collision_box = {{0, 0}, {0, 0}},
     tile_width = 1,
     tile_height = 1,
     picture = {
-      filename = "__Orbital_Strategems__/graphics/sprites/stratagem-sprite.png",
+      filename = hd.mod_path .. "/graphics/sprites/stratagem-sprite.png",
       width = 64,
       height = 64,
-      shift = {0,0},
+      shift = {0, 0},
       scale = 0.3
     },
     max_health = 100,
@@ -37,4 +39,4 @@ data:extend({
       max_radius = 100
     }
   }
-  })
+})

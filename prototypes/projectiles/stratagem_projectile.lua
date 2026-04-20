@@ -1,7 +1,9 @@
+local hd = require("lib.defines")
+
 data:extend({
   {
     type = "projectile",
-    name = "stratagem-projectile",
+    name = hd.id.projectile.stratagem,
     flags = {"not-on-map"},
     acceleration = 0,
     action = {
@@ -10,26 +12,26 @@ data:extend({
         type = "instant",
         target_effects = {
           {
-              type = "script",
-              effect_id = "trigger_pod_drop"
+            type = "script",
+            effect_id = hd.id.effect.trigger_pod_drop
           },
           {
-              type = "create-entity",
-              entity_name = "stratagem-entity",
+            type = "create-entity",
+            entity_name = hd.id.entity.stratagem_marker
           }
         }
       }
     },
     animation = {
-      filename = "__Orbital_Strategems__/graphics/sprites/stratagem-sprite.png",
+      filename = hd.mod_path .. "/graphics/sprites/stratagem-sprite.png",
       frame_count = 1,
       width = 64,
       height = 64,
-      scale= 0.2,
+      scale = 0.2,
       priority = "high"
     },
     shadow = {
-      filename = "__Orbital_Strategems__/graphics/sprites/shadow.png",
+      filename = hd.mod_path .. "/graphics/sprites/shadow.png",
       width = 64,
       height = 64,
       scale = 0.5,
@@ -37,5 +39,4 @@ data:extend({
       direction_count = 1
     }
   }
-  })
-  
+})

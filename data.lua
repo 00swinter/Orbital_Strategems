@@ -1,19 +1,17 @@
-require("prototypes.item.stratagem")
-require("prototypes.item.stratagem-remote")
-require("prototypes.entity.hellpod-projectile")
-require("prototypes.entity.stratagem-entity")
-require("prototypes.entity.stratagem-projectile");
-require("prototypes.recipe.stratagem-remote-recipe")
+require("prototypes.items.stratagem")
+require("prototypes.items.stratagem_remote")
+require("prototypes.items.space_building_item")
+require("prototypes.items.hellpod_item")
 
-
-require("prototypes.animation.hellpod_landing")
-require("prototypes.animation.hellpod_smash")
-
-require("prototypes.trigger.trigger")
-
-require("prototypes.buildings.space-building")
-require("prototypes.item.space-building-item")
-
-require("prototypes.item.hellpod-item")
+require("prototypes.recipes.stratagem_remote_recipe")
 require("prototypes.stratagems.mines.mines")
+
+require("prototypes.animations.hellpod_landing")
+require("prototypes.animations.hellpod_smash")
+require("prototypes.animations.hellpod_pop")
+
+require("prototypes.entities.stratagem_entity")
+require("prototypes.entities.space_building")
+require("prototypes.projectiles.hellpod_projectile")
+require("prototypes.projectiles.stratagem_projectile")
 

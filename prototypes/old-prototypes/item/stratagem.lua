@@ -2,7 +2,7 @@ data:extend({
     {
       type = "item",
       name = "stratagem-item",
-      icon = "__Orbital_Strategems__/graphics/icons/stratagem-item.png",  -- Example icon
+      icon = "__Helldivers__/graphics/icons/stratagem-item.png",  -- Example icon
       icon_size = 64,
       subgroup = "tool",
       order = "a[items]-b[stratagem-item]",

@@ -21,7 +21,7 @@ data:extend({
       }
     },
     animation = {
-      filename = "__Orbital_Strategems__/graphics/sprites/stratagem-sprite.png",
+      filename = "__Helldivers__/graphics/sprites/stratagem-sprite.png",
       frame_count = 1,
       width = 64,
       height = 64,
@@ -29,7 +29,7 @@ data:extend({
       priority = "high"
     },
     shadow = {
-      filename = "__Orbital_Strategems__/graphics/sprites/shadow.png",
+      filename = "__Helldivers__/graphics/sprites/shadow.png",
       width = 64,
       height = 64,
       scale = 0.5,

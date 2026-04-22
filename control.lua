@@ -1,4 +1,5 @@
--- require("control_input")
+require("control_input")
+require("control_stratagem")
 
 
 -- script.on_event(defines.events.on_player_used_capsule, function(event)

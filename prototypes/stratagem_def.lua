@@ -16,13 +16,15 @@ local stratagems = {
         type = "hellpod",
         name = def.MOD_PREFIX .. "gatling-gun",
         icon = def.MOD_PATH_NAME .. "/graphics/icons/stratagems/remote_01.png",
-        arrows = {"Up", "RIGHT", "DOWN", "LEFT"}
+        arrows = {"Up", "RIGHT", "DOWN", "LEFT"},
+        color = "red"
     },
     {
         type = "hellpod",
         name = def.MOD_PREFIX .. "container",
         icon = def.MOD_PATH_NAME .. "/graphics/icons/stratagems/remote_02.png",
-        arrows = {"Up", "RIGHT", "DOWN", "LEFT"}
+        arrows = {"Up", "RIGHT", "DOWN", "LEFT"},
+        color = "blue"
     }
 }
 

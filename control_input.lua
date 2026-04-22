@@ -53,8 +53,6 @@ local function drawArrowSequence(player_index)
         
         local xOffset = (currentPosition - centerShift) * (arrowWidth + spacing)
         
-        --local drawX = player.x + xOffset
-        --local drawY = player.y - yOffset
         
         local render_id = rendering.draw_sprite{
             sprite = arrow_map[direction],

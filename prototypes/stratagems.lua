@@ -7,10 +7,10 @@ local prototypes = {}
 for _, stratagem in ipairs(stratagem_def) do
 
     local color_map = {
-        white = {1, 1, 1, 1},
-        red = {1, 0, 0, 1},
-        green = {0, 1, 0, 1},
-        blue = {0, 0, 1, 1}
+        white = {0.1, 0.1, 0.1, 0.1},
+        red =   {0.1, 0.0, 0.0, 0.1},
+        green = {0.0, 0.1, 0.0, 0.1},
+        blue =  {0.0, 0.0, 0.1, 0.1},
     }
 
     table.insert(prototypes, {
@@ -26,15 +26,18 @@ for _, stratagem in ipairs(stratagem_def) do
         capsule_action = {
             type = "throw",
             attack_parameters = {
-                type = "stream",
+                type = "projectile",
                 range = stratagem.range,
                 cooldown = stratagem.cooldown,
                 ammo_category = "capsule",
                 ammo_type = {
-                    type = "direct",
-                    action_delivery = {
-                        type = "stream",
-                        stream = stratagem.name .. "-stream"
+                    target_type = "position",
+                    action = {
+                        type = "direct",
+                        action_delivery = {
+                            type = "stream",
+                            stream = stratagem.name .. "-stream"
+                        }
                     }
                 }
             },
@@ -47,11 +50,44 @@ for _, stratagem in ipairs(stratagem_def) do
     table.insert(prototypes, {
         type = "stream",
         name = stratagem.name .. "-stream",
+        flags = {"not-on-map"},
+        hidden = true,
+        oriented_particle = true,
+        particle = {
+            filename = "__base__/graphics/entity/grenade/grenade.png",
+            width = 48,
+            height = 54,
+            animation_speed = 0.25,
+            frame_count = 16,
+            line_length = 8,
+            shift = {0.015625, 0.015625},
+            scale = 0.5
+        },
+        shadow = {
+            draw_as_shadow = true,
+            filename = "__base__/graphics/entity/grenade/grenade-shadow.png",
+            width = 50,
+            height = 40,
+            animation_speed = 0.25,
+            frame_count = 16,
+            line_length = 8,
+            shift = {0.0625, 0.1875},
+            scale = 0.5
+        },
+        particle_buffer_size = 1,
+        particle_end_alpha = 1,
+        particle_fade_out_threshold = 1,
+        particle_loop_exit_threshold = 1,
+        particle_loop_frame_count = 1,
+        particle_start_alpha = 1,
+        particle_start_scale = 1,
         particle_spawn_interval = 0,
         particle_spawn_timeout = 1,
-        particle_horizontal_speed = 0.5,
+
+        particle_horizontal_speed = 0.7,
         particle_horizontal_speed_deviation = 0.05,
-        particle_vertical_acceleration = 0.01,
+        particle_vertical_acceleration = 0.025,
+
         action = {
             type = "direct",
             action_delivery = {
@@ -63,6 +99,11 @@ for _, stratagem in ipairs(stratagem_def) do
                     }
                 }
             }
+        },
+        stream_light = {
+            color = { r = 1, g = 1, b = 1 },
+            intensity = 0.5,
+            size = 2
         },
     })
 

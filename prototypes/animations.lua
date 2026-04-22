@@ -8,7 +8,7 @@ data:extend({
         scale = 0.6,
         frame_count = 15,
         line_length = 4,
-        shift = {0, -7}
+        shift = { 0, -7 }
     },
     {
         type = "animation",
@@ -19,7 +19,7 @@ data:extend({
         scale = 0.8,
         frame_count = 36,
         line_length = 6,
-        shift = {0, 0}
+        shift = { 0, 0 }
     },
     {
         type = "animation",
@@ -30,6 +30,6 @@ data:extend({
         scale = 0.8,
         frame_count = 36,
         line_length = 6,
-        shift = {0, 0}
+        shift = { 0, 0 }
     }
 })

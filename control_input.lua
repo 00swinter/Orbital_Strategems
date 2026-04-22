@@ -1,4 +1,7 @@
 
+local def = require("defines")
+
+local stratagem_def = require("prototypes.stratagem_def")
 
 
 local function ensurePlayerDefaults(player_data)
@@ -88,34 +91,48 @@ local function cancelInput(e)
     game.print("clear")
 end
 
-local TARGET_ARROWS = {"UP", "RIGHT", "DOWN", "DOWN", "DOWN"}
-local INPUT_CLEAR_TICKS = 120
-local COMPLETE_SHOW_TICKS = 45
+local INPUT_CLEAR_TICKS = 60
+local COMPLETE_SHOW_TICKS = 60
+
+local function normalizeDirection(direction)
+    if type(direction) ~= "string" then return nil end
+    return string.upper(direction)
+end
 
 local function checkArrows(playerindex)
     local player_data = getOrCreatePlayerData(playerindex)
     local player_sequence = player_data.arrowSequence
 
-    if #player_sequence > #TARGET_ARROWS then
-        return "failed"
-    end
+    local has_partial_match = false
 
-    for i = 1, #player_sequence do
-        if player_sequence[i] ~= TARGET_ARROWS[i] then
-            return "failed"
+    for _, stratagem in ipairs(stratagem_def) do
+        local arrows = stratagem.arrows or {}
+        local is_prefix_match = true
+
+        if #player_sequence > #arrows then
+            is_prefix_match = false
+        else
+            for i = 1, #player_sequence do
+                if normalizeDirection(player_sequence[i]) ~= normalizeDirection(arrows[i]) then
+                    is_prefix_match = false
+                    break
+                end
+            end
+        end
+
+        if is_prefix_match then
+            if #player_sequence == #arrows then
+                return "complete", stratagem.name
+            end
+            has_partial_match = true
         end
     end
 
-    if #player_sequence == #TARGET_ARROWS then
-        local player_obj = game.players[playerindex]
-        if player_obj and player_obj.valid and player_obj.character then
-            player_obj.cursor_stack.set_stack({name = "stratagem-remote"})
-        end
-
-        return "complete"
+    if has_partial_match then
+        return "partial", nil
     end
 
-    return "partial"
+    return "failed", nil
 end
 
 local function arrowInput(e)
@@ -135,9 +152,14 @@ local function arrowInput(e)
         table.insert(player.arrowSequence, direction)
         player.clearTick = game.tick + INPUT_CLEAR_TICKS
 
-        local match_state = checkArrows(e.player_index)
+        local match_state, matched_stratagem_name = checkArrows(e.player_index)
         if match_state == "complete" then
-            game.print("Arrow combo matched!")
+            local player_obj = game.players[e.player_index]
+            if player_obj and player_obj.valid and player_obj.character and matched_stratagem_name then
+                player_obj.cursor_stack.set_stack({name = def.MOD_PREFIX .. matched_stratagem_name .. "-capsule"})
+            end
+
+            game.print("Arrow combo matched: " .. (matched_stratagem_name or "unknown"))
             -- Keep the full combo visible briefly before automatic cleanup.
             player.clearTick = game.tick + COMPLETE_SHOW_TICKS
         elseif match_state == "failed" then
@@ -183,8 +205,6 @@ local function onTick()
     --game.print("update" .. game.tick)
 
 end
-
-
 
 
 script.on_event("helldivers_cancel", cancelInput)

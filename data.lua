@@ -8,4 +8,6 @@ require("prototypes.recipe")
 require("prototypes.sprites")
 require("prototypes.stratagems")
 
+require("data_require_hellpods")
+
 

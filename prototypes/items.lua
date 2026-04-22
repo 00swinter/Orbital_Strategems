@@ -1,4 +1,3 @@
-
 local def = require("defines")
 
 data:extend({
@@ -15,13 +14,13 @@ data:extend({
     },
 
     {
-      type = "item",
-      name = "stratagem-beacon-item",
-      icon = "__Helldivers__/graphics/icons/stratagem-item.png",  -- Example icon
-      icon_size = 64,
-      subgroup = "stratagem-item-subgroup",
-      order = "a[items]-b[stratagem-item]",
-      stack_size = 150,
-      place_result = "stratagem-beacon-entity"
+        type = "item",
+        name = "stratagem-beacon-item",
+        icon = "__Helldivers__/graphics/icons/stratagem-item.png", -- Example icon
+        icon_size = 64,
+        subgroup = "stratagem-item-subgroup",
+        order = "a[items]-b[stratagem-item]",
+        stack_size = 150,
+        place_result = "stratagem-beacon-entity"
     }
 })

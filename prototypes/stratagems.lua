@@ -13,6 +13,8 @@ for _, stratagem in ipairs(stratagem_def) do
         blue =  {0.0, 0.0, 0.1, 0.1},
     }
 
+    stratagem.name = def.MOD_PREFIX .. stratagem.name
+
     table.insert(prototypes, {
         type = "capsule",
         name = stratagem.name .. "-capsule",
@@ -94,8 +96,8 @@ for _, stratagem in ipairs(stratagem_def) do
                 type = "instant",
                 target_effects = {
                     {
-                        type = "create-entity",
-                        entity_name = "stratagem-beacon-entity",
+                        type = "script",
+                        effect_id = stratagem.name .. "#" .."-stratagem-beacon-landed-trigger"
                     }
                 }
             }

@@ -1,4 +1,4 @@
-local _MOD_PREFIX = "LIBERTY_"
+local _MOD_PREFIX = "LIBERTY-"
 
 return {
    MOD_PATH_NAME = "__Helldivers__",

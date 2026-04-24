@@ -1,7 +1,7 @@
 data:extend({
     {
         type = "animation",
-        name = "hellpod_landing_animation",
+        name = "hellpod_falling_animation",
         filename = "__Helldivers__/graphics/animation/hellpod/hellpod_landing.png",
         width = 512,
         height = 512,

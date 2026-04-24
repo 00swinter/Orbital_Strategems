@@ -1,7 +1,7 @@
 
 local def = require("defines")
 
-local stratagem_def = require("prototypes.stratagem_def")
+local stratagem_def = require("prototypes.dynamic_stratagem_def")
 
 
 local function ensurePlayerDefaults(player_data)
@@ -156,7 +156,7 @@ local function arrowInput(e)
         if match_state == "complete" then
             local player_obj = game.players[e.player_index]
             if player_obj and player_obj.valid and player_obj.character and matched_stratagem_name then
-                player_obj.cursor_stack.set_stack({name = def.MOD_PREFIX .. matched_stratagem_name .. "-capsule"})
+                player_obj.cursor_stack.set_stack({name = matched_stratagem_name .. "-capsule"})
             end
 
             game.print("Arrow combo matched: " .. (matched_stratagem_name or "unknown"))

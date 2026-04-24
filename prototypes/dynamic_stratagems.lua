@@ -1,27 +1,25 @@
 local def = require("defines")
-local stratagem_def = require("prototypes.stratagem_def")
+local stratagem_def = require("prototypes.dynamic_stratagem_def")
 
 
 local prototypes = {}
 
 for _, stratagem in ipairs(stratagem_def) do
-
     local color_map = {
-        white = {0.1, 0.1, 0.1, 0.1},
-        red =   {0.1, 0.0, 0.0, 0.1},
-        green = {0.0, 0.1, 0.0, 0.1},
-        blue =  {0.0, 0.0, 0.1, 0.1},
+        white = { 0.1, 0.1, 0.1, 0.1 },
+        red = { 0.1, 0.0, 0.0, 0.1 },
+        green = { 0.0, 0.1, 0.0, 0.1 },
+        blue = { 0.0, 0.0, 0.1, 0.1 },
     }
 
-    stratagem.name = def.MOD_PREFIX .. stratagem.name
-
+    -- the remotes to throw the beacons
     table.insert(prototypes, {
         type = "capsule",
         name = stratagem.name .. "-capsule",
         icon = stratagem.icon,
         icon_size = 32,
         stack_size = 1,
-        flags = {"spawnable", "only-in-cursor", "not-stackable"},
+        flags = { "spawnable", "only-in-cursor", "not-stackable" },
         subgroup = "stratagem-item-subgroup",
         order = "a[" .. stratagem.color .. "]-a[" .. stratagem.name .. "]",
 
@@ -48,11 +46,11 @@ for _, stratagem in ipairs(stratagem_def) do
         radius_color = color_map[stratagem.color]
     })
 
-
+    -- the stream so the remote flys in arc
     table.insert(prototypes, {
         type = "stream",
         name = stratagem.name .. "-stream",
-        flags = {"not-on-map"},
+        flags = { "not-on-map" },
         hidden = true,
         oriented_particle = true,
         particle = {
@@ -62,7 +60,7 @@ for _, stratagem in ipairs(stratagem_def) do
             animation_speed = 0.25,
             frame_count = 16,
             line_length = 8,
-            shift = {0.015625, 0.015625},
+            shift = { 0.015625, 0.015625 },
             scale = 0.5
         },
         shadow = {
@@ -73,7 +71,7 @@ for _, stratagem in ipairs(stratagem_def) do
             animation_speed = 0.25,
             frame_count = 16,
             line_length = 8,
-            shift = {0.0625, 0.1875},
+            shift = { 0.0625, 0.1875 },
             scale = 0.5
         },
         particle_buffer_size = 1,
@@ -97,7 +95,7 @@ for _, stratagem in ipairs(stratagem_def) do
                 target_effects = {
                     {
                         type = "script",
-                        effect_id = stratagem.name .. "#" .."-stratagem-beacon-landed-trigger"
+                        effect_id = stratagem.name .. "#" .. def.script_trigger.hellpod_beacon_landed_ending
                     }
                 }
             }
@@ -109,12 +107,13 @@ for _, stratagem in ipairs(stratagem_def) do
         },
     })
 
+    -- the recipes to craft the remotes
     table.insert(prototypes, {
         type = "recipe",
         name = stratagem.name .. "-recipe",
         enable = true,
         results = {
-            {type="item", name=stratagem.name .. "-capsule", amount = 1}
+            { type = "item", name = stratagem.name .. "-capsule", amount = 1 }
         },
         recipe_category = "basic-crafting",
         icon = stratagem.icon,
@@ -122,8 +121,68 @@ for _, stratagem in ipairs(stratagem_def) do
     })
 
 
+    if stratagem.type == "hellpod" then
+        -- the hellpod projectiles
+        table.insert(prototypes, {
 
-    
+            type = "projectile",
+            name = stratagem.name .. "-hellpod-projectile",
+            acceleration = -0.005,
+            light = { intensity = 3, size = 40 },
+            action = {
+                {
+                    type = "area",
+                    radius = 1.1,
+                    action_delivery =
+                    {
+                        type = "instant",
+                        target_effects =
+                        {
+                            {
+                                type = "damage",
+                                damage = { amount = 500, type = "explosion" }
+                            },
+                            {
+                                type = "invoke-tile-trigger",
+                                repeat_count = 3
+                            },
+                            {
+                                type = "create-entity",
+                                entity_name = "big-scorchmark-tintable",
+                                check_buildability = true
+                            },
+                        }
+                    }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "instant",
+                        target_effects =
+                        {
+                            {
+                                type = "script",
+                                effect_id = def.script_trigger.hellpod_smash
+                            }
+                        }
+                    }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "delayed",
+                        delayed_trigger = def.MOD_PREFIX .. "hellpod-pop-animation-delayed-trigger"
+                    }
+                }
+            }
+        })
+    end
+
+
+
+
+
+
     -- table.insert(prototypes, {
     --     type = "capsule",
     --     name = props.name,

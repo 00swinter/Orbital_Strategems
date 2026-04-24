@@ -6,7 +6,8 @@ require("prototypes.inputs")
 require("prototypes.items")
 require("prototypes.recipe")
 require("prototypes.sprites")
-require("prototypes.stratagems")
+require("prototypes.dynamic_stratagems")
+require("prototypes.trigger")
 
 require("data_require_hellpods")
 

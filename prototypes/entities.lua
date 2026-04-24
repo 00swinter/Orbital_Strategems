@@ -1,3 +1,18 @@
+
+
+
+local newContainer = table.deepcopy(data.raw["container"]["steel-chest"])
+
+newContainer.inventory_type = "with_filters_and_bar"
+newContainer.name = "test-container"
+
+data:extend({
+  newContainer,
+})
+
+
+
+
 data:extend({
   {
     type = "simple-entity",

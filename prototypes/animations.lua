@@ -12,6 +12,17 @@ data:extend({
     },
     {
         type = "animation",
+        name = "hellpod_smash_animation",
+        filename = "__Helldivers__/graphics/animation/hellpod/hellpod_smash.png",
+        width = 720,
+        height = 720,
+        scale = 0.8,
+        frame_count = 36,
+        line_length = 6,
+        shift = { 0, 0 }
+    },
+    {
+        type = "animation",
         name = "hellpod_pop_animation",
         filename = "__Helldivers__/graphics/animation/hellpod/hellpod_pop.png",
         width = 720,
@@ -23,13 +34,13 @@ data:extend({
     },
     {
         type = "animation",
-        name = "hellpod_smash_animation",
-        filename = "__Helldivers__/graphics/animation/hellpod/hellpod_smash.png",
+        name = "hellpod_container_rise_animation",
+        filename = "__Helldivers__/graphics/animation/hellpod/hellpod_container_rise.png",
         width = 720,
         height = 720,
         scale = 0.8,
         frame_count = 36,
         line_length = 6,
         shift = { 0, 0 }
-    }
+    },
 })

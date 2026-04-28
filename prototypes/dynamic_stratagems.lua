@@ -173,6 +173,13 @@ for _, stratagem in ipairs(stratagem_def) do
                         type = "delayed",
                         delayed_trigger = def.MOD_PREFIX .. "hellpod-pop-animation-delayed-trigger"
                     }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "delayed",
+                        delayed_trigger = def.MOD_PREFIX .. "hellpod-spawn-container-delayed-trigger"
+                    }
                 }
             }
         })

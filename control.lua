@@ -1,5 +1,4 @@
-require("control_input")
-require("control_stratagem")
+require("control_input")require("control_stratagem")
 
 
 -- script.on_event(defines.events.on_player_used_capsule, function(event)
@@ -22,7 +21,7 @@ require("control_stratagem")
 --                 position = player.position
 --             })
 --             for _, entity in pairs(projectiles) do
---                 entity.destroy()  -- Deletes the entity from the game
+--                 entity.destroy()  -- Deletes the entity from the gamesaa
 --             end
 --         end
 --     end

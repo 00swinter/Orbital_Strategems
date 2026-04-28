@@ -25,5 +25,5 @@ data:extend({
         name = "hd_arrow_right",
         filename = def.MOD_PATH_NAME .. "/graphics/icons/arrows/arrow_right.png",
         size = 48
-    },
+    }
 })

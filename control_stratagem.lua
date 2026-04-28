@@ -78,7 +78,6 @@ local function handleLandedTrigger(event)
     for _, stratagem in ipairs(stratagem_def) do
         if stratagem.name == stratagem_name then
             stratagem_data = stratagem
-        else
             break
         end
     end
@@ -86,6 +85,13 @@ local function handleLandedTrigger(event)
     --spawn result
     if stratagem_data.type == "hellpod" then
         spawnHellpod(event, stratagem_data)
+        --beacon
+        surface.create_entity({
+            name = "stratagem-beacon-entity",
+            position = position,
+            player = event.source_entity.player,
+            force = "player"
+        })
     end
 
 
@@ -135,12 +141,23 @@ script.on_event(defines.events.on_script_trigger_effect, function(event)
         renderAnimation(
             destination,
             current_surface,
-            "hellpod_pop_animation",
+            "hellpod_container_rise_animation",
             36,
             0.5,
             "lower-object-above-shadow",
             70
         )
+    end
+
+    if event.effect_id == def.script_trigger.hellpod_spawn_container then
+        local container = current_surface.create_entity({
+            name = "hellpod_container_entity",
+            position = destination
+        })
+
+        if container and container.valid then
+            container.insert({ name = "iron-plate", count = 100 })
+        end
     end
 end)
 

@@ -11,6 +11,7 @@ return {
       hellpod_smash = _MOD_PREFIX .. "hellpod-smash-animation-script-trigger",
       hellpod_pop = _MOD_PREFIX .. "hellpod-pop-animation-script-trigger",
       hellpod_spawn_ending = "-hellpod-spawn-script-trigger",
-      hellpod_beacon_landed_ending = "-stratagem-beacon-landed-script-trigger"
+      hellpod_beacon_landed_ending = "-stratagem-beacon-landed-script-trigger",
+      hellpod_spawn_container = "hellpod-spawn-container-script-trigger"
    }
 }

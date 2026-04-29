@@ -156,7 +156,7 @@ local function arrowInput(e)
         if match_state == "complete" then
             local player_obj = game.players[e.player_index]
             if player_obj and player_obj.valid and player_obj.character and matched_stratagem_name then
-                player_obj.cursor_stack.set_stack({name = matched_stratagem_name .. "-capsule"})
+                player_obj.cursor_stack.set_stack({name =  def.prototype_names_generated.stratagem_capsule(matched_stratagem_name), count = 1})
             end
 
             game.print("Arrow combo matched: " .. (matched_stratagem_name or "unknown"))

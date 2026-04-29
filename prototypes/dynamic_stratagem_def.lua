@@ -5,7 +5,7 @@ local default = {
     type = "hellpod", --  "hellpod" | "eagle" | "orbital",
     name = def.MOD_PREFIX .. "unnamed-stratagem",
     range = 50,
-    cooldown = 10, -- 1 sec
+    cooldown = 1,
     color = "white",  --  "white" | "red" | "green" | "blue"
     icon = def.MOD_PATH_NAME .. "/graphics/icons/stratagems/remote_01.png",
     arrows = {"Up", "RIGHT", "DOWN", "LEFT"}
@@ -14,16 +14,21 @@ local default = {
 local stratagems = {
     {
         type = "hellpod",
-        name = def.MOD_PREFIX .. "gatling-gun",
+        name = def.prototype_names.hellpod_entities_short.gatling_gun,
         icon = def.MOD_PATH_NAME .. "/graphics/icons/stratagems/remote_01.png",
         arrows = {"Up", "RIGHT", "DOWN", "DOWN", "DOWN"},
-        color = "red"
+        color = "red",
+        action = {
+            type = "hellpod",
+            subtype = "turret",
+            ammo = "normal ammo",
+        }
     },
     {
         type = "hellpod",
-        name = def.MOD_PREFIX .. "container",
+        name = def.prototype_names.hellpod_entities_short.container,
         icon = def.MOD_PATH_NAME .. "/graphics/icons/stratagems/remote_02.png",
-        arrows = {"DOWN", "UP", "RIGHT", "LEFT"},
+        arrows = {"DOWN", "DOWN", "UP", "RIGHT"},
         color = "blue"
     }
 }

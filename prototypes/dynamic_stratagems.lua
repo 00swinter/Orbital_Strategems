@@ -12,10 +12,10 @@ for _, stratagem in ipairs(stratagem_def) do
         blue = { 0.0, 0.0, 0.1, 0.1 },
     }
 
-    -- the remotes to throw the beacons
+    -- the capsule     (remote) to throw the beacons
     table.insert(prototypes, {
         type = "capsule",
-        name = stratagem.name .. "-capsule",
+        name = def.prototype_names_generated.stratagem_capsule(stratagem.name),
         icon = stratagem.icon,
         icon_size = 32,
         stack_size = 1,
@@ -36,7 +36,7 @@ for _, stratagem in ipairs(stratagem_def) do
                         type = "direct",
                         action_delivery = {
                             type = "stream",
-                            stream = stratagem.name .. "-stream"
+                            stream = def.prototype_names_generated.stratagem_stream(stratagem.name)
                         }
                     }
                 }
@@ -46,10 +46,10 @@ for _, stratagem in ipairs(stratagem_def) do
         radius_color = color_map[stratagem.color]
     })
 
-    -- the stream so the remote flys in arc
+    -- the stream       so the remote flys in arc
     table.insert(prototypes, {
         type = "stream",
-        name = stratagem.name .. "-stream",
+        name = def.prototype_names_generated.stratagem_stream(stratagem.name),
         flags = { "not-on-map" },
         hidden = true,
         oriented_particle = true,
@@ -95,7 +95,8 @@ for _, stratagem in ipairs(stratagem_def) do
                 target_effects = {
                     {
                         type = "script",
-                        effect_id = stratagem.name .. "#" .. def.script_trigger.hellpod_beacon_landed_ending
+                        effect_id = def.script_trigger_effect_generated(stratagem.name,
+                            def.script_trigger_dynamic_type.stratagem_beacon_landed)
                     }
                 }
             }
@@ -107,13 +108,13 @@ for _, stratagem in ipairs(stratagem_def) do
         },
     })
 
-    -- the recipes to craft the remotes
+    -- the recipes       to craft the remotes
     table.insert(prototypes, {
         type = "recipe",
-        name = stratagem.name .. "-recipe",
+        name = def.prototype_names_generated.stratagem_recipe(stratagem.name),
         enable = true,
         results = {
-            { type = "item", name = stratagem.name .. "-capsule", amount = 1 }
+            { type = "item", name = def.prototype_names_generated.stratagem_capsule(stratagem.name), amount = 1 }
         },
         recipe_category = "basic-crafting",
         icon = stratagem.icon,
@@ -126,7 +127,7 @@ for _, stratagem in ipairs(stratagem_def) do
         table.insert(prototypes, {
 
             type = "projectile",
-            name = stratagem.name .. "-hellpod-projectile",
+            name = def.prototype_names_generated.hellpod_projectile(stratagem.name),
             acceleration = -0.005,
             light = { intensity = 3, size = 40 },
             action = {
@@ -171,54 +172,117 @@ for _, stratagem in ipairs(stratagem_def) do
                     type = "direct",
                     action_delivery = {
                         type = "delayed",
-                        delayed_trigger = def.MOD_PREFIX .. "hellpod-pop-animation-delayed-trigger"
+                        delayed_trigger = def.prototype_names_generated.delayed_trigger_rise_animation(stratagem.name)
                     }
                 },
                 {
                     type = "direct",
                     action_delivery = {
                         type = "delayed",
-                        delayed_trigger = def.MOD_PREFIX .. "hellpod-spawn-container-delayed-trigger"
+                        delayed_trigger = def.prototype_names_generated.delayed_trigger_spawn(stratagem.name)
+                    }
+                }
+            }
+        })
+
+
+        -- lid-corpse
+        table.insert(prototypes, {
+            type = "corpse",
+            name = def.prototype_names_generated.hellpod_lid_corpse(stratagem.name),
+            flags = {
+                "placeable-neutral",
+                "placeable-off-grid",
+                "not-on-map"
+            },
+            icon = "__base__/graphics/icons/gun-turret.png",
+            selectable_in_game = false,
+            animation = {
+                {
+                    filename = "__Helldivers__/graphics/sprites/hellpod_container_lid_corpse_sprite.png",
+                    width = 720,
+                    height = 720,
+                    scale = 0.8
+                }
+            },
+            time_before_removed = 60 * 26,
+            time_before_shading_off = 60 * 24,
+        })
+
+        -- delayed rise animation trigger
+        table.insert(prototypes, {
+            type = "delayed-active-trigger",
+            name = def.prototype_names_generated.delayed_trigger_rise_animation(stratagem.name),
+            delay = 60,
+            action = {
+                {
+                    type = "area",
+                    radius = 1.1,
+                    action_delivery =
+                    {
+                        type = "instant",
+                        target_effects =
+                        {
+                            {
+                                type = "damage",
+                                damage = { amount = 5000, type = "explosion" }
+                            }
+                        }
+                    }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "instant",
+                        target_effects = {
+                            {
+                                type = "script",
+                                effect_id = def.script_trigger_effect_generated(stratagem.name,
+                                    def.script_trigger_dynamic_type.hellpod_rise_animation)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        -- delayed spawn trigger
+        table.insert(prototypes, {
+            type = "delayed-active-trigger",
+            name = def.prototype_names_generated.delayed_trigger_spawn(stratagem.name),
+            delay = 130,
+            action = {
+                {
+                    type = "area",
+                    radius = 1.1,
+                    action_delivery =
+                    {
+                        type = "instant",
+                        target_effects =
+                        {
+                            {
+                                type = "damage",
+                                damage = { amount = 5000, type = "explosion" }
+                            }
+                        }
+                    }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "instant",
+                        target_effects = {
+                            {
+                                type = "script",
+                                effect_id = def.script_trigger_effect_generated(stratagem.name,
+                                    def.script_trigger_dynamic_type.hellpod_spawn_result)
+                            }
+                        }
                     }
                 }
             }
         })
     end
-
-
-
-
-
-
-    -- table.insert(prototypes, {
-    --     type = "capsule",
-    --     name = props.name,
-    --     icon = props.icon,
-    --     icon_size = 32,
-    --     subgroup = "stratagem-item-subgroup",
-    --     order = "a[" .. props.color .. "]-a[" .. props.name .. "]",
-    --     stack_size = 1,
-    --     capsule_action = {
-    --         type = "throw",
-    --         uses_stack = false,
-    --         attack_parameters = {
-    --             type = "projectile",
-    --             cooldown = props.cooldown,
-    --             range = props.range,
-    --             ammo_category = "capsule",
-    --             ammo_type = {
-    --                 action = {
-    --                     type = "direct",
-    --                     action_delivery = {
-    --                         type = "projectile",
-    --                         projectile = "stratagem-projectile",
-    --                         starting_speed = 0.5,
-    --                     }
-    --                 }
-    --             }
-    --         }
-    --     }
-    -- })
 end
 
 data:extend(prototypes)

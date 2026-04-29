@@ -1,3 +1,6 @@
+local def = require("defines")
+
+
 data:extend({
     {
         type = "animation",
@@ -34,8 +37,19 @@ data:extend({
     },
     {
         type = "animation",
-        name = "hellpod_container_rise_animation",
-        filename = "__Helldivers__/graphics/animation/hellpod/hellpod_container_rise.png",
+        name = def.prototype_names_generated.hellpod_rise_animation(def.prototype_names.hellpod_entities_short.container),
+        filename = "__Helldivers__/graphics/animation/hellpod/hellpod_rise_container.png",
+        width = 720,
+        height = 720,
+        scale = 0.8,
+        frame_count = 36,
+        line_length = 6,
+        shift = { 0, 0 }
+    },
+    {
+        type = "animation",
+        name = def.prototype_names_generated.hellpod_rise_animation(def.prototype_names.hellpod_entities_short.gatling_gun),
+        filename = "__Helldivers__/graphics/animation/hellpod/hellpod_rise_container.png",
         width = 720,
         height = 720,
         scale = 0.8,

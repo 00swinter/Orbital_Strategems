@@ -26,101 +26,109 @@ local function renderAnimation(target, surface, animation_name, frames_num, spee
     }
 end
 
-local function spawnHellpod(event, stratagem_data)
-    local current_surface = game.surfaces[event.surface_index]
-    local destination = event.target_position
 
-    if current_surface and destination then
-        local elevated_position = {
-            x = destination.x,
-            y = destination.y - 200
-        }
-
-        local hellpod_projectile = current_surface.create_entity {
-            name = stratagem_data.name .. "-hellpod-projectile",
-            position = elevated_position,
-            target = destination,
-            speed = 1.9
-        }
-
-        renderAnimation(
-            hellpod_projectile,
-            current_surface,
-            "hellpod_falling_animation",
-            15,
-            0.25,
-            "air-object",
-            500
-        )
-    end
-end
-
-
-local function handleLandedTrigger(event)
-    local effect_name = event.effect_id
-    if type(effect_name) ~= "string" then return end
-
-    local parts = splitByHash(effect_name)
-    if #parts < 2 then return end
-
-    if parts[#parts] ~= def.script_trigger.hellpod_beacon_landed_ending then return end
-
-    local stratagem_name = parts[1]
-    if stratagem_name == "" then return end
-
-
-    local surface = game.surfaces[1]       -- or get the surface from event if available
-    local position = event.target_position -- The position where the effect triggered
-
+local function handle_beacon_landed(event, name)
+    local surface = game.surfaces[event.surface_index]
+    local position = event.target_position
 
     --check if available
-    local stratagem_data
-    for _, stratagem in ipairs(stratagem_def) do
-        if stratagem.name == stratagem_name then
-            stratagem_data = stratagem
-            break
-        end
-    end
 
-    --spawn result
-    if stratagem_data.type == "hellpod" then
-        spawnHellpod(event, stratagem_data)
-        --beacon
-        surface.create_entity({
-            name = "stratagem-beacon-entity",
-            position = position,
-            player = event.source_entity.player,
-            force = "player"
-        })
-    end
+    --spawn entity
 
+    local elevated_position = {
+        x = position.x,
+        y = position.y - 200
+    }
 
+    local hellpod_projectile = surface.create_entity {
+        name = def.prototype_names_generated.hellpod_projectile(name),
+        position = elevated_position,
+        target = position,
+        speed = 1.9
+    }
 
-    -- local chest = surface.create_entity({
-    --     name = "steel-chest",
-    --     position = position,
-    --     player = event.source_entity.player,
-    --     force = "player"
-    -- })
-
-    --chest.operable = false;
+    renderAnimation(
+        hellpod_projectile,
+        surface,
+        "hellpod_falling_animation",
+        15,
+        0.25,
+        "air-object",
+        500
+    )
 
 
-
-
-
-
-    --game.print("Stratagem beacon landed for: " .. stratagem_data.name)
+    --spawn beacon
+    surface.create_entity({
+        name = "stratagem-beacon-entity",
+        position = position,
+        player = event.source_entity.player,
+        force = "player"
+    })
 end
 
+local function handle_hellpod_spawn_entity(event, name)
+    local surface = game.surfaces[event.surface_index]
+    local position = event.target_position
+
+    surface.create_entity({
+        name = def.prototype_names_generated.hellpod_entity(name),
+        position = position,
+    })
+
+    surface.create_entity({
+        name = def.prototype_names_generated.hellpod_lid_corpse(name),
+        position = position,
+    })
+
+    
+end
+
+local function handle_hellpod_rise_animation(event, name)
+    local surface = game.surfaces[event.surface_index]
+    local position = event.target_position
+
+    renderAnimation(
+        position,
+        surface,
+        def.prototype_names_generated.hellpod_rise_animation(name),
+        36,
+        0.5,
+        "lower-object-above-shadow",
+        70
+    )
+end
+
+local function handleDynamicTrigger(event) -- Prefix # name # type # script_trigger
+    local effect_id = event.effect_id
+    if type(effect_id) ~= "string" then return end
+
+    local parts = splitByHash(effect_id)
+
+    if #parts ~= 4 then return end
+
+    local trigger_name = parts[2]
+    local trigger_type = parts[3]
+
+    if trigger_name == "" or trigger_type == "" then return end
+
+
+    if trigger_type == def.script_trigger_dynamic_type.stratagem_beacon_landed then
+        handle_beacon_landed(event, trigger_name)
+    elseif trigger_type == def.script_trigger_dynamic_type.hellpod_spawn_result then
+        handle_hellpod_spawn_entity(event, trigger_name)
+    elseif trigger_type == def.script_trigger_dynamic_type.hellpod_rise_animation then
+        handle_hellpod_rise_animation(event, trigger_name)
+    end
+end
 
 
 
 
 
 script.on_event(defines.events.on_script_trigger_effect, function(event)
-    --game.print(event.effect_id)
-    handleLandedTrigger(event)
+
+    handleDynamicTrigger(event)
 
     local current_surface = game.surfaces[event.surface_index]
     local destination = event.target_position
@@ -137,28 +145,6 @@ script.on_event(defines.events.on_script_trigger_effect, function(event)
         )
     end
 
-    if event.effect_id == def.script_trigger.hellpod_pop then
-        renderAnimation(
-            destination,
-            current_surface,
-            "hellpod_container_rise_animation",
-            36,
-            0.5,
-            "lower-object-above-shadow",
-            70
-        )
-    end
-
-    if event.effect_id == def.script_trigger.hellpod_spawn_container then
-        local container = current_surface.create_entity({
-            name = "hellpod_container_entity",
-            position = destination
-        })
-
-        if container and container.valid then
-            container.insert({ name = "iron-plate", count = 100 })
-        end
-    end
 end)
 
 

@@ -50,7 +50,7 @@ local stratagems = {
         action = {
             type = "hellpod",
             subtype = "mines",
-            mine_name = "land-mine";
+            mine_name = "fire-mine";
         }
     }
 }

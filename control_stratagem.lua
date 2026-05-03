@@ -1,6 +1,6 @@
 local def = require("defines")
 local stratagem_def = require("prototypes.dynamic_stratagem_def")
-
+local vector2 = require("vector2")
 
 local LANDED_TRIGGER_TAG = "-stratagem-beacon-landed-trigger"
 
@@ -116,19 +116,43 @@ local function handle_mines_spawn_projectiles(event, name, extra)
     local surface = game.surfaces[event.surface_index]
     local position = event.target_position
 
+    local distance = tonumber(extra) or 1
+    local golden_angle = math.pi * (3 - math.sqrt(5))
 
     for i = 1, 6 do
+        local unique_seed = distance * 10 + i
+        
+        local angle = unique_seed * golden_angle
+        local radius = distance * 0.8
 
         local target_position = {
-            x = position.x + math.cos((i-1) * math.pi/3) * extra * 1,
-            y = position.y + math.sin((i-1) * math.pi/3) * extra * 1
+            x = position.x + math.cos(angle) * radius,
+            y = position.y + math.sin(angle) * radius
         }
+        local direction = vector2.normalize(vector2.sub(target_position, position))
+
+        local min_spawn_distance = 0.5
+        local max_spawn_distance = 1.5
+
+        local min_spawn_height = -1.3
+        local max_spawn_height = -0.3
+
+        local distance_factor = (distance - 5) / 15
+
+        local spawn_distance = distance_factor * (max_spawn_distance - min_spawn_distance) + min_spawn_distance
+
+        local spawn_height = distance_factor * (max_spawn_height - min_spawn_height) + min_spawn_height
+
+        local spawn_position = vector2.add(position, vector2.scale(direction, spawn_distance))
+
+        spawn_position = vector2.add(spawn_position, { x = 0, y = spawn_height })
 
         local mine_projectile = surface.create_entity {
             name = def.prototype_names_generated.mine_stream(name),
-            position = position,
-            source_position = position,
+            position = spawn_position,
+            source_position = spawn_position,
             target_position = target_position,
+            force = "player",
         }
     end
 end

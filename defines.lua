@@ -76,7 +76,7 @@ return {
          return _MOD_PREFIX .. base_name .. "-mine_stream"
       end,
 
-      delayed_mines_deploy_mines_projectiles = function(base_name, distance)
+      delayed_trigger_mines_deploy_projectiles = function(base_name, distance)
          return _MOD_PREFIX .. base_name .. "-distance_" .. distance .. "-hellpod_mines_deploy_animation"
       end,
 

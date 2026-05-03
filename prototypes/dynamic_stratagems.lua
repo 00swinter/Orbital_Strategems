@@ -193,6 +193,8 @@ for _, stratagem in ipairs(stratagem_def) do
         }
 
         if stratagem.action.subtype == "mines" then
+
+
             table.insert(hellpod_projectile.action, {
                 type = "direct",
                 action_delivery = {
@@ -202,25 +204,57 @@ for _, stratagem in ipairs(stratagem_def) do
                 }
             })
 
-            --delay trigger spawn mine projectiles distance 5
-            table.insert(hellpod_projectile.action, {
-                type = "direct",
-                action_delivery = {
-                    type = "delayed",
-                    delayed_trigger = def.prototype_names_generated.delayed_mines_deploy_mines_projectiles(
-                        stratagem.name, "5")
-                }
-            })
 
-            --delay trigger spawn mine projectiles distance 10
-            table.insert(hellpod_projectile.action, {
-                type = "direct",
-                action_delivery = {
-                    type = "delayed",
-                    delayed_trigger = def.prototype_names_generated.delayed_mines_deploy_mines_projectiles(
-                        stratagem.name, "10")
-                }
-            })
+
+            local mines_deploy_progression = {
+                start_tick = 170,
+                end_tick = 220,
+                repeat_count = 50,
+                min_distance = 5,
+                max_distance = 25,
+            }
+
+            for i = 1, mines_deploy_progression.repeat_count do
+                local fraction = (i - 1) / (mines_deploy_progression.repeat_count - 1)
+
+                local current_dist = math.floor(mines_deploy_progression.min_distance +
+                fraction * (mines_deploy_progression.max_distance - mines_deploy_progression.min_distance) + 0.5)
+                local current_delay = math.floor(mines_deploy_progression.start_tick +
+                fraction * (mines_deploy_progression.end_tick - mines_deploy_progression.start_tick) + 0.5)
+
+                local dist_str = tostring(current_dist)
+
+                table.insert(hellpod_projectile.action, {
+                    type = "direct",
+                    action_delivery = {
+                        type = "delayed",
+                        delayed_trigger = def.prototype_names_generated.delayed_trigger_mines_deploy_projectiles(
+                        stratagem.name, dist_str)
+                    }
+                })
+
+                table.insert(prototypes, {
+                    type = "delayed-active-trigger",
+                    name = def.prototype_names_generated.delayed_trigger_mines_deploy_projectiles(stratagem.name, dist_str),
+                    delay = current_delay,
+                    action = {
+                        {
+                            type = "direct",
+                            action_delivery = {
+                                type = "instant",
+                                target_effects = {
+                                    {
+                                        type = "script",
+                                        effect_id = def.script_trigger_effect_generated(stratagem.name,
+                                            def.script_trigger_dynamic_type.mines_spawn_projectiles, dist_str)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            end
+
         end
 
         table.insert(prototypes, hellpod_projectile)
@@ -238,7 +272,7 @@ for _, stratagem in ipairs(stratagem_def) do
             selectable_in_game = false,
             animation = {
                 {
-                    filename = "__Helldivers__/graphics/sprites/hellpod_container_lid_corpse_sprite.png",
+                    filename = dynamic_base_path .. stratagem.name .. "/lid_corpse_sprite.png",
                     width = 720,
                     height = 720,
                     scale = 0.8
@@ -321,59 +355,6 @@ for _, stratagem in ipairs(stratagem_def) do
                 }
             }
         })
-
-
-        local projectile_spawn_delays = { -- duration 128 ticks  -> 8 launches each 16 ticks apart
-            ["5"] = 130 + 16 * 1,
-            ["10"] = 130 + 16 * 2,
-        }
-
-
-
-        -- delayed spawn projectiles trigger   DISTANCE 5
-        table.insert(prototypes, {
-            type = "delayed-active-trigger",
-            name = def.prototype_names_generated.delayed_mines_deploy_mines_projectiles(stratagem.name, "5"),
-            delay = projectile_spawn_delays["5"],
-            action = {
-                {
-                    type = "direct",
-                    action_delivery = {
-                        type = "instant",
-                        target_effects = {
-                            {
-                                type = "script",
-                                effect_id = def.script_trigger_effect_generated(stratagem.name,
-                                    def.script_trigger_dynamic_type.mines_spawn_projectiles, "5")
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        -- delayed spawn projectiles trigger   DISTANCE 5
-        table.insert(prototypes, {
-            type = "delayed-active-trigger",
-            name = def.prototype_names_generated.delayed_mines_deploy_mines_projectiles(stratagem.name, "10"),
-            delay = projectile_spawn_delays["10"],
-            action = {
-                {
-                    type = "direct",
-                    action_delivery = {
-                        type = "instant",
-                        target_effects = {
-                            {
-                                type = "script",
-                                effect_id = def.script_trigger_effect_generated(stratagem.name,
-                                    def.script_trigger_dynamic_type.mines_spawn_projectiles, "10")
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
 
         --rise animation
         table.insert(prototypes, {
@@ -471,14 +452,14 @@ for _, stratagem in ipairs(stratagem_def) do
                 hidden = true,
                 oriented_particle = true,
                 particle = {
-                    filename = "__base__/graphics/entity/grenade/grenade.png",
-                    width = 48,
-                    height = 54,
-                    animation_speed = 0.25,
+                    filename = dynamic_base_path .. stratagem.name .. "/fly_animation.png",
+                    width = 720,
+                    height = 720,
+                    animation_speed = 2,
                     frame_count = 16,
-                    line_length = 8,
-                    shift = { 0.015625, 0.015625 },
-                    scale = 0.5
+                    line_length = 4,
+                    shift = { 0, 0 },
+                    scale = 0.08
                 },
                 shadow = {
                     draw_as_shadow = true,
@@ -494,15 +475,15 @@ for _, stratagem in ipairs(stratagem_def) do
                 particle_buffer_size = 1,
                 particle_end_alpha = 1,
                 particle_fade_out_threshold = 1,
-                particle_loop_exit_threshold = 1,
-                particle_loop_frame_count = 1,
+                particle_loop_exit_threshold = 16,
+                particle_loop_frame_count = 16,
                 particle_start_alpha = 1,
                 particle_start_scale = 1,
                 particle_spawn_interval = 0,
                 particle_spawn_timeout = 1,
 
-                particle_horizontal_speed = 0.1,
-                particle_horizontal_speed_deviation = 0.05,
+                particle_horizontal_speed = 0.2,
+                particle_horizontal_speed_deviation = 0,
                 particle_vertical_acceleration = 0.003,
 
                 action = {

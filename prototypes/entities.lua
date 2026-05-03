@@ -147,5 +147,6 @@ data:extend({
     },
     time_before_removed = 60*60,
     time_before_shading_off = 60*57,
-  }
+  },
+  
 })

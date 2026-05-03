@@ -80,8 +80,6 @@ local function handle_hellpod_spawn_entity(event, name)
         name = def.prototype_names_generated.hellpod_lid_corpse(name),
         position = position,
     })
-
-    
 end
 
 local function handle_hellpod_rise_animation(event, name)
@@ -99,16 +97,53 @@ local function handle_hellpod_rise_animation(event, name)
     )
 end
 
+local function handle_mines_deploy_animation(event, name)
+    local surface = game.surfaces[event.surface_index]
+    local position = event.target_position
+
+    renderAnimation(
+        position,
+        surface,
+        def.prototype_names_generated.hellpod_mines_deploy_animation(name),
+        64,
+        0.5,
+        "lower-object-above-shadow",
+        128
+    )
+end
+
+local function handle_mines_spawn_projectiles(event, name, extra)
+    local surface = game.surfaces[event.surface_index]
+    local position = event.target_position
+
+
+    for i = 1, 6 do
+
+        local target_position = {
+            x = position.x + math.cos((i-1) * math.pi/3) * extra * 1,
+            y = position.y + math.sin((i-1) * math.pi/3) * extra * 1
+        }
+
+        local mine_projectile = surface.create_entity {
+            name = def.prototype_names_generated.mine_stream(name),
+            position = position,
+            source_position = position,
+            target_position = target_position,
+        }
+    end
+end
+
 local function handleDynamicTrigger(event) -- Prefix # name # type # script_trigger
     local effect_id = event.effect_id
     if type(effect_id) ~= "string" then return end
 
     local parts = splitByHash(effect_id)
 
-    if #parts ~= 4 then return end
+    if #parts ~= 5 then return end
 
     local trigger_name = parts[2]
     local trigger_type = parts[3]
+    local trigger_extra = parts[4]
 
     if trigger_name == "" or trigger_type == "" then return end
 
@@ -119,6 +154,10 @@ local function handleDynamicTrigger(event) -- Prefix # name # type # script_trig
         handle_hellpod_spawn_entity(event, trigger_name)
     elseif trigger_type == def.script_trigger_dynamic_type.hellpod_rise_animation then
         handle_hellpod_rise_animation(event, trigger_name)
+    elseif trigger_type == def.script_trigger_dynamic_type.mines_deploy_animation then
+        handle_mines_deploy_animation(event, trigger_name)
+    elseif trigger_type == def.script_trigger_dynamic_type.mines_spawn_projectiles then
+        handle_mines_spawn_projectiles(event, trigger_name, trigger_extra)
     end
 end
 
@@ -127,7 +166,6 @@ end
 
 
 script.on_event(defines.events.on_script_trigger_effect, function(event)
-
     handleDynamicTrigger(event)
 
     local current_surface = game.surfaces[event.surface_index]
@@ -144,7 +182,6 @@ script.on_event(defines.events.on_script_trigger_effect, function(event)
             70
         )
     end
-
 end)
 
 

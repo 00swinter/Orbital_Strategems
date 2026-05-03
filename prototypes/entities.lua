@@ -54,7 +54,7 @@ data:extend({
   },
   {
     type = "simple-entity",
-    name = def.prototype_names_generated.hellpod_entity(def.prototype_names.hellpod_entities_short.container),
+    name = def.prototype_names_generated.hellpod_entity(def.prototype_names.hellpod_entities_short.resupply),
     icon = "__Helldivers__/graphics/icons/stratagem-item.png",
     icon_size = 64,
     flags = {

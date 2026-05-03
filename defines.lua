@@ -20,16 +20,20 @@ return {
       stratagem_beacon_landed = "stratagem_beacon_landed",
       hellpod_spawn_result = "hellpod_spawn_entity",
       hellpod_rise_animation = "hellpod_rise_animation",
+      mines_deploy_animation = "mines_deploy_animation",
+      mines_spawn_projectiles = "mines_spawn_projectiles"
    },
 
-   script_trigger_effect_generated = function(base_name, type)
-      return _MOD_PREFIX .. "#" .. base_name .. "#" .. type .. "#" .. "-script_trigger_effect"
+   script_trigger_effect_generated = function(base_name, type, extra)
+      extra = extra or "none"
+      return _MOD_PREFIX .. "#" .. base_name .. "#" .. type .. "#" .. extra .. "#" .. "-script_trigger_effect"
    end,
 
    prototype_names = {
       hellpod_entities_short = {
-         container = "container",
-         gatling_gun = "gatling_gun"
+         resupply = "resupply",
+         gatling_gun = "gatling_gun",
+         mines_incendary = "mines_incendary",
       },
       corpse = {
          hellpod = _MOD_PREFIX .. "hellpod-corpse"
@@ -64,12 +68,30 @@ return {
          return _MOD_PREFIX .. base_name .. "-hellpod_lid_corpse"
       end,
 
+      hellpod_mines_deploy_animation = function(base_name)
+         return _MOD_PREFIX .. base_name .. "-hellpod_mines_deploy_animation"
+      end,
+
+      mine_stream = function(base_name)
+         return _MOD_PREFIX .. base_name .. "-mine_stream"
+      end,
+
+      delayed_mines_deploy_mines_projectiles = function(base_name, distance)
+         return _MOD_PREFIX .. base_name .. "-distance_" .. distance .. "-hellpod_mines_deploy_animation"
+      end,
+
+      delayed_trigger_mines_deploy_animation = function(base_name)
+         return _MOD_PREFIX .. base_name .. "-deploy_animation_delayed_trigger"
+      end,
+
       delayed_trigger_spawn = function(base_name)
          return _MOD_PREFIX .. base_name .. "-spawn_delayed_trigger"
       end,
 
       delayed_trigger_rise_animation = function(base_name)
          return _MOD_PREFIX .. base_name .. "-rise_animation_delayed_trigger"
-      end
+      end,
+
+
    }
 }

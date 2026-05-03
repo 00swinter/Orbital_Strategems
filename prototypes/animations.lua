@@ -37,7 +37,7 @@ data:extend({
     },
     {
         type = "animation",
-        name = def.prototype_names_generated.hellpod_rise_animation(def.prototype_names.hellpod_entities_short.container),
+        name = def.prototype_names_generated.hellpod_rise_animation(def.prototype_names.hellpod_entities_short.resupply),
         filename = "__Helldivers__/graphics/animation/hellpod/hellpod_rise_container.png",
         width = 720,
         height = 720,

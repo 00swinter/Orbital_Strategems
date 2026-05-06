@@ -5,6 +5,14 @@ return {
    MOD_PREFIX = _MOD_PREFIX,
    setting_a = _MOD_PREFIX .. "setting-name",
 
+   path_generated = {
+      icon = function(base_name)
+         return "__Helldivers__/graphics/icons/" .. base_name .. ".png"
+      end,
+      sprite = function(base_name)
+         return "__Helldivers__/graphics/sprites/" .. base_name .. ".png"
+      end
+   },
 
    script_trigger = {
       hellpod_fall = _MOD_PREFIX .. "hellpod-fall-animation-script-trigger",
@@ -33,10 +41,31 @@ return {
       hellpod_entities_short = {
          resupply = "resupply",
          gatling_gun = "gatling_gun",
+         sentry_autocannon = "sentry_autocannon",
          mines_incendary = "mines_incendary",
+         mines_gas = "mines_gas",
       },
+      spaceHub = _MOD_PREFIX .. "space-hub",
       corpse = {
          hellpod = _MOD_PREFIX .. "hellpod-corpse"
+      },
+      sentry = {
+         autocannon = {
+            turret = _MOD_PREFIX .. "autocannon-turret",
+            ammo = _MOD_PREFIX .. "autocannon-ammo",
+            particle = _MOD_PREFIX .. "autocannon-shell-particle"
+         }
+      },
+      mines = {
+         incendary = {
+            mine = _MOD_PREFIX .. "incendary-mine",
+         }
+      },
+      crafting = {
+         empty_hellpod = _MOD_PREFIX .. "empty-hellpod",
+         charged_battery = _MOD_PREFIX .. "charged-battery",
+         computer = _MOD_PREFIX .. "steering-computer",
+
       }
    },
    prototype_names_generated = {
@@ -54,6 +83,10 @@ return {
 
       hellpod_entity = function(base_name)
          return _MOD_PREFIX .. base_name .. "-hellpod_entity"
+      end,
+
+      space_hub_item = function(base_name)
+         return _MOD_PREFIX .. base_name .. "-space_hub_item"
       end,
 
       hellpod_projectile = function(base_name)

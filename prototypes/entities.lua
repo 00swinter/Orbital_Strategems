@@ -12,6 +12,11 @@ data:extend({
 
 
 
+local space_hub = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-1"])
+
+local graphics = table.deepcopy(space_hub.graphics_set) 
+
+
 
 data:extend({
   {
@@ -55,7 +60,7 @@ data:extend({
   {
     type = "simple-entity",
     name = def.prototype_names_generated.hellpod_entity(def.prototype_names.hellpod_entities_short.resupply),
-    icon = "__Helldivers__/graphics/icons/stratagem-item.png",
+    icon = "__Helldivers__/graphics/icons/stratagem_beacon_icon.png",
     icon_size = 64,
     flags = {
       "placeable-neutral",
@@ -94,7 +99,7 @@ data:extend({
   {
     type = "simple-entity",
     name = def.prototype_names_generated.hellpod_entity(def.prototype_names.hellpod_entities_short.gatling_gun),
-    icon = "__Helldivers__/graphics/icons/stratagem-item.png",
+    icon = "__Helldivers__/graphics/icons/stratagem_beacon_icon.png",
     icon_size = 64,
     flags = {
       "placeable-neutral",
@@ -148,5 +153,39 @@ data:extend({
     time_before_removed = 60*60,
     time_before_shading_off = 60*57,
   },
+  {
+    type = "assembling-machine",
+    name = "space-hub",
+    icon = def.path_generated.sprite("space_hub_sprite"),
+    icon_size = 64,
+    energy_usage = "10kW",
+    energy_source = {
+      type = "void",
+      render_no_power_icon = false,
+      render_no_network_icon = false,
+    },
+    crafting_categories = {"crafting"},
+    crafting_speed = 1,
+    fixed_recipe = "space-hub-fixed-recipe",
+    graphics_set = graphics,
+    collision_box = { { -1.2, -1.2 }, { 1.2, 1.2 } },
+    selection_box = { { -1.5, -1.5 }, { 1.5, 1.5 } },
+    minable = {
+      mining_time = 0.5,
+      result = "space-hub"
+    },
+    flags = {
+      "placeable-neutral",
+      "placeable-player",
+      "player-creation"
+    },
+    surface_conditions = {
+      {
+        property = "pressure",
+        min = 0,
+        max = 0
+      }
+    }
+  }
   
 })

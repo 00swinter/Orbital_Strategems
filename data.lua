@@ -1,15 +1,18 @@
 
--- require("prototypes.ammo")
+require("prototypes.ammo")
 require("prototypes.animations")
 require("prototypes.entities")
 require("prototypes.inputs")
 require("prototypes.items")
-require("prototypes.mines")
 require("prototypes.recipe")
 require("prototypes.sprites")
 require("prototypes.dynamic_stratagems")
 require("prototypes.trigger")
+require("prototypes.categories")
 
-require("data_require_hellpods")
 
 
+
+
+require("prototypes.grouped.sentries")
+require("prototypes.grouped.mines")

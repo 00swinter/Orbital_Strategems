@@ -6,6 +6,8 @@ local prototypes = {}
 
 local dynamic_base_path = def.MOD_PATH_NAME .. "/graphics/dynamic/"
 
+local space_hub_fixed_recipe_ingredients = {}
+
 for _, stratagem in ipairs(stratagem_def) do
     local color_map = {
         white = { 0.1, 0.1, 0.1, 0.1 },
@@ -16,8 +18,9 @@ for _, stratagem in ipairs(stratagem_def) do
 
     local spawn_delay = 0
 
+
     if stratagem.action.subtype == "mines" then
-        spawn_delay = 128
+        spawn_delay = 127
     end
 
     -- the capsule     (remote) to throw the beacons
@@ -52,6 +55,23 @@ for _, stratagem in ipairs(stratagem_def) do
             uses_stack = false
         },
         radius_color = color_map[stratagem.color]
+    })
+
+
+    -- the space-hub item that is used on stratagem use
+    table.insert(prototypes, {
+        type = "item",
+        name = def.prototype_names_generated.space_hub_item(stratagem.name),
+        icon = dynamic_base_path .. stratagem.name .. "/space_hub_item_icon.png",
+        icon_size = 32,
+        stack_size = 100
+    })
+
+    --collect all space-hub-items in the fixed recipe
+    table.insert(space_hub_fixed_recipe_ingredients, {
+        type = "item",
+        name = def.prototype_names_generated.space_hub_item(stratagem.name),
+        amount = 50
     })
 
     -- the stream       so the remote flys in arc
@@ -136,7 +156,6 @@ for _, stratagem in ipairs(stratagem_def) do
             type = "projectile",
             name = def.prototype_names_generated.hellpod_projectile(stratagem.name),
             acceleration = -0.005,
-            light = { intensity = 3, size = 40 },
             action = {
                 {
                     type = "area",
@@ -193,8 +212,6 @@ for _, stratagem in ipairs(stratagem_def) do
         }
 
         if stratagem.action.subtype == "mines" then
-
-
             table.insert(hellpod_projectile.action, {
                 type = "direct",
                 action_delivery = {
@@ -209,18 +226,18 @@ for _, stratagem in ipairs(stratagem_def) do
             local mines_deploy_progression = {
                 start_tick = 170,
                 end_tick = 220,
-                repeat_count = 50,
-                min_distance = 5,
-                max_distance = 25,
+                repeat_count = 8,
+                min_distance = 10,
+                max_distance = 35,
             }
 
             for i = 1, mines_deploy_progression.repeat_count do
                 local fraction = (i - 1) / (mines_deploy_progression.repeat_count - 1)
 
                 local current_dist = math.floor(mines_deploy_progression.min_distance +
-                fraction * (mines_deploy_progression.max_distance - mines_deploy_progression.min_distance) + 0.5)
+                    fraction * (mines_deploy_progression.max_distance - mines_deploy_progression.min_distance) + 0.5)
                 local current_delay = math.floor(mines_deploy_progression.start_tick +
-                fraction * (mines_deploy_progression.end_tick - mines_deploy_progression.start_tick) + 0.5)
+                    fraction * (mines_deploy_progression.end_tick - mines_deploy_progression.start_tick) + 0.5)
 
                 local dist_str = tostring(current_dist)
 
@@ -229,13 +246,14 @@ for _, stratagem in ipairs(stratagem_def) do
                     action_delivery = {
                         type = "delayed",
                         delayed_trigger = def.prototype_names_generated.delayed_trigger_mines_deploy_projectiles(
-                        stratagem.name, dist_str)
+                            stratagem.name, dist_str)
                     }
                 })
 
                 table.insert(prototypes, {
                     type = "delayed-active-trigger",
-                    name = def.prototype_names_generated.delayed_trigger_mines_deploy_projectiles(stratagem.name, dist_str),
+                    name = def.prototype_names_generated.delayed_trigger_mines_deploy_projectiles(stratagem.name,
+                        dist_str),
                     delay = current_delay,
                     action = {
                         {
@@ -254,7 +272,6 @@ for _, stratagem in ipairs(stratagem_def) do
                     }
                 })
             end
-
         end
 
         table.insert(prototypes, hellpod_projectile)
@@ -494,6 +511,7 @@ for _, stratagem in ipairs(stratagem_def) do
                             {
                                 type = "create-entity",
                                 entity_name = stratagem.action.mine_name,
+                                check_buildability = true
                             }
                         }
                     }
@@ -507,5 +525,22 @@ for _, stratagem in ipairs(stratagem_def) do
         end
     end
 end
+
+
+
+-- the space-hub-fixed recipe
+table.insert(prototypes, {
+    type = "recipe",
+    name = "space-hub-fixed-recipe",
+    enable = true,
+    results = {
+        { type = "item", name = "stratagem-beacon-item", amount = 1 }
+    },
+    ingredients = space_hub_fixed_recipe_ingredients,
+    recipe_category = "basic-crafting"
+})
+
+
+
 
 data:extend(prototypes)

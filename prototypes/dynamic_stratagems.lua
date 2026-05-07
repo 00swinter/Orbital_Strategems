@@ -16,18 +16,13 @@ for _, stratagem in ipairs(stratagem_def) do
         blue = { 0.0, 0.0, 0.1, 0.1 },
     }
 
-    local spawn_delay = 0
 
-
-    if stratagem.action.subtype == "mines" then
-        spawn_delay = 127
-    end
 
     -- the capsule     (remote) to throw the beacons
     table.insert(prototypes, {
         type = "capsule",
         name = def.prototype_names_generated.stratagem_capsule(stratagem.name),
-        icon = dynamic_base_path .. stratagem.name .. "/remote_icon.png",
+        icon = def.get_image(stratagem.name, def.image_type.remote_icon),
         icon_size = 32,
         stack_size = 1,
         flags = { "spawnable", "only-in-cursor", "not-stackable" },
@@ -62,7 +57,7 @@ for _, stratagem in ipairs(stratagem_def) do
     table.insert(prototypes, {
         type = "item",
         name = def.prototype_names_generated.space_hub_item(stratagem.name),
-        icon = dynamic_base_path .. stratagem.name .. "/space_hub_item_icon.png",
+        icon = def.get_image(stratagem.name, def.image_type.space_hub_item_icon),
         icon_size = 32,
         stack_size = 100
     })
@@ -145,12 +140,23 @@ for _, stratagem in ipairs(stratagem_def) do
             { type = "item", name = def.prototype_names_generated.stratagem_capsule(stratagem.name), amount = 1 }
         },
         recipe_category = "basic-crafting",
-        icon = dynamic_base_path .. stratagem.name .. "/remote_icon.png",
+        icon = def.get_image(stratagem.name, def.image_type.remote_icon),
         icon_size = 32
     })
 
 
-    if stratagem.type == "hellpod" then
+    if stratagem.action.type == "hellpod" then
+        
+        
+        local spawn_delay = 0
+
+        if stratagem.action.subtype == "mines" then
+            spawn_delay = 127
+        elseif stratagem.action.subtype == "sentry" then
+            spawn_delay = 64
+        end
+
+
         -- the hellpod projectiles
         local hellpod_projectile = {
             type = "projectile",
@@ -231,6 +237,7 @@ for _, stratagem in ipairs(stratagem_def) do
                 max_distance = 35,
             }
 
+            -- register all the trigger for projectile spawn
             for i = 1, mines_deploy_progression.repeat_count do
                 local fraction = (i - 1) / (mines_deploy_progression.repeat_count - 1)
 
@@ -272,120 +279,7 @@ for _, stratagem in ipairs(stratagem_def) do
                     }
                 })
             end
-        end
 
-        table.insert(prototypes, hellpod_projectile)
-
-        -- lid-corpse
-        table.insert(prototypes, {
-            type = "corpse",
-            name = def.prototype_names_generated.hellpod_lid_corpse(stratagem.name),
-            flags = {
-                "placeable-neutral",
-                "placeable-off-grid",
-                "not-on-map"
-            },
-            icon = "__base__/graphics/icons/gun-turret.png",
-            selectable_in_game = false,
-            animation = {
-                {
-                    filename = dynamic_base_path .. stratagem.name .. "/lid_corpse_sprite.png",
-                    width = 720,
-                    height = 720,
-                    scale = 0.8
-                }
-            },
-            time_before_removed = 60 * 26,
-            time_before_shading_off = 60 * 24,
-        })
-
-        -- delayed rise animation trigger
-        table.insert(prototypes, {
-            type = "delayed-active-trigger",
-            name = def.prototype_names_generated.delayed_trigger_rise_animation(stratagem.name),
-            delay = 60,
-            action = {
-                {
-                    type = "area",
-                    radius = 1.1,
-                    action_delivery =
-                    {
-                        type = "instant",
-                        target_effects =
-                        {
-                            {
-                                type = "damage",
-                                damage = { amount = 5000, type = "explosion" }
-                            }
-                        }
-                    }
-                },
-                {
-                    type = "direct",
-                    action_delivery = {
-                        type = "instant",
-                        target_effects = {
-                            {
-                                type = "script",
-                                effect_id = def.script_trigger_effect_generated(stratagem.name,
-                                    def.script_trigger_dynamic_type.hellpod_rise_animation)
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        -- delayed spawn trigger
-        table.insert(prototypes, {
-            type = "delayed-active-trigger",
-            name = def.prototype_names_generated.delayed_trigger_spawn(stratagem.name),
-            delay = 130 + spawn_delay,
-            action = {
-                {
-                    type = "area",
-                    radius = 1.1,
-                    action_delivery =
-                    {
-                        type = "instant",
-                        target_effects =
-                        {
-                            {
-                                type = "damage",
-                                damage = { amount = 5000, type = "explosion" }
-                            }
-                        }
-                    }
-                },
-                {
-                    type = "direct",
-                    action_delivery = {
-                        type = "instant",
-                        target_effects = {
-                            {
-                                type = "script",
-                                effect_id = def.script_trigger_effect_generated(stratagem.name,
-                                    def.script_trigger_dynamic_type.hellpod_spawn_result)
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        --rise animation
-        table.insert(prototypes, {
-            type = "animation",
-            name = def.prototype_names_generated.hellpod_rise_animation(stratagem.name),
-            filename = dynamic_base_path .. stratagem.name .. "/rise_animation.png",
-            width = 720,
-            height = 720,
-            scale = 0.8,
-            frame_count = 36,
-            line_length = 6
-        })
-
-        if stratagem.action.subtype == "mines" then
             -- delayed deploy animation trigger
             table.insert(prototypes, {
                 type = "delayed-active-trigger",
@@ -412,7 +306,7 @@ for _, stratagem in ipairs(stratagem_def) do
             table.insert(prototypes, {
                 type = "animation",
                 name = def.prototype_names_generated.hellpod_mines_deploy_animation(stratagem.name),
-                filename = dynamic_base_path .. stratagem.name .. "/deploy_animation.png",
+                filename = def.get_image(stratagem.name, def.image_type.deploy_animation),
                 width = 720,  --576,
                 height = 720, --576,
                 scale = 0.8,
@@ -424,7 +318,7 @@ for _, stratagem in ipairs(stratagem_def) do
             table.insert(prototypes, {
                 type = "simple-entity",
                 name = def.prototype_names_generated.hellpod_entity(stratagem.name),
-                icon = dynamic_base_path .. stratagem.name .. "/remote_icon.png",
+                icon = def.get_image(stratagem.name, def.image_type.remote_icon),
                 icon_size = 32,
                 flags = {
                     "placeable-neutral",
@@ -437,7 +331,7 @@ for _, stratagem in ipairs(stratagem_def) do
                 tile_width = 1,
                 tile_height = 1,
                 picture = {
-                    filename = dynamic_base_path .. stratagem.name .. "/sprite.png",
+                    filename = def.get_image(stratagem.name, def.image_type.normal_sprite),
                     width = 720,
                     height = 720,
                     shift = { 0, 0 },
@@ -469,7 +363,7 @@ for _, stratagem in ipairs(stratagem_def) do
                 hidden = true,
                 oriented_particle = true,
                 particle = {
-                    filename = dynamic_base_path .. stratagem.name .. "/fly_animation.png",
+                    filename = def.get_image(stratagem.name, def.image_type.fly_animation),
                     width = 720,
                     height = 720,
                     animation_speed = 2,
@@ -523,6 +417,152 @@ for _, stratagem in ipairs(stratagem_def) do
                 },
             })
         end
+
+        if stratagem.action.subtype == "sentry" then
+
+            --add trigger for sentry unfold 
+            table.insert(hellpod_projectile.action, {
+                type = "direct",
+                action_delivery = {
+                    type = "delayed",
+                    delayed_trigger = def.prototype_names_generated.delayed_trigger_sentry_unfold_animation(stratagem.name)
+                }
+            })
+
+            -- delayed unfold  animation trigger
+            table.insert(prototypes, {
+                type = "delayed-active-trigger",
+                name = def.prototype_names_generated.delayed_trigger_sentry_unfold_animation(stratagem.name),
+                delay = 130,
+                action = {
+                    {
+                        type = "direct",
+                        action_delivery = {
+                            type = "instant",
+                            target_effects = {
+                                {
+                                    type = "script",
+                                    effect_id = def.script_trigger_effect_generated(stratagem.name, def.script_trigger_dynamic_type.sentry_unfold_animation)
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+
+            --sentry unfold animation
+            table.insert(prototypes, {
+                type = "animation",
+                name = def.prototype_names_generated.hellpod_sentry_unfold_animation(stratagem.name),
+                filename = def.get_image(stratagem.name, def.image_type.unfold_animation),
+                width = 720,
+                height = 720,
+                scale = 0.8,
+                frame_count = 36,
+                line_length = 6
+            })
+        end
+
+        table.insert(prototypes, hellpod_projectile)
+
+
+        -- delayed rise animation trigger
+        table.insert(prototypes, {
+            type = "delayed-active-trigger",
+            name = def.prototype_names_generated.delayed_trigger_rise_animation(stratagem.name),
+            delay = 60,
+            action = {
+                {
+                    type = "area",
+                    radius = 1.1,
+                    action_delivery =
+                    {
+                        type = "instant",
+                        target_effects =
+                        {
+                            {
+                                type = "damage",
+                                damage = { amount = 5000, type = "explosion" }
+                            }
+                        }
+                    }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "instant",
+                        target_effects = {
+                            {
+                                type = "script",
+                                effect_id = def.script_trigger_effect_generated(stratagem.name,
+                                    def.script_trigger_dynamic_type.hellpod_rise_animation)
+                            },
+                            {
+                                type = "create-particle",
+                                particle_name = "hellpod-lid-particle",
+                                initial_height = 0,
+                                initial_vertical_speed = 0.17,
+                                initial_vertical_speed_deviation = 0.05,
+                                speed_from_center = 0.08,
+                                speed_from_center_deviation = 0.02,
+                                frame_speed = 0.4,
+                                frame_speed_deviation = 0.2,
+                                offset_deviation = { { -0.1, -0.1 }, { 0.1, 0.1 } },
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        -- delayed spawn trigger
+        table.insert(prototypes, {
+            type = "delayed-active-trigger",
+            name = def.prototype_names_generated.delayed_trigger_spawn(stratagem.name),
+            delay = 130 + spawn_delay,
+            action = {
+                {
+                    type = "area",
+                    radius = 1.1,
+                    action_delivery =
+                    {
+                        type = "instant",
+                        target_effects =
+                        {
+                            {
+                                type = "damage",
+                                damage = { amount = 5000, type = "explosion" }
+                            }
+                        }
+                    }
+                },
+                {
+                    type = "direct",
+                    action_delivery = {
+                        type = "instant",
+                        target_effects = {
+                            {
+                                type = "script",
+                                effect_id = def.script_trigger_effect_generated(stratagem.name,
+                                    def.script_trigger_dynamic_type.hellpod_spawn_result)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        --rise animation
+        table.insert(prototypes, {
+            type = "animation",
+            name = def.prototype_names_generated.hellpod_rise_animation(stratagem.name),
+            filename = def.get_image(stratagem.name, def.image_type.rise_animation),
+            width = 720,
+            height = 720,
+            scale = 0.8,
+            frame_count = 36,
+            line_length = 6
+        })
     end
 end
 

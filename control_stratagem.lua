@@ -148,11 +148,7 @@ local function handle_hellpod_spawn_entity(event, name)
     surface.create_entity({
         name = def.prototype_names_generated.hellpod_entity(name),
         position = position,
-    })
-
-    surface.create_entity({
-        name = def.prototype_names_generated.hellpod_lid_corpse(name),
-        position = position,
+        direction = defines.direction.west
     })
 end
 
@@ -231,6 +227,21 @@ local function handle_mines_spawn_projectiles(event, name, extra)
     end
 end
 
+local function handle_sentry_unfold_animation(event, name)
+    local surface = game.surfaces[event.surface_index]
+    local position = event.target_position
+
+    renderAnimation(
+        position,
+        surface,
+        def.prototype_names_generated.hellpod_sentry_unfold_animation(name),
+        36,
+        0.5,
+        "lower-object-above-shadow",
+        64
+    )
+end
+
 
 local function handleDynamicTrigger(event) -- Prefix # name # type # script_trigger
     local effect_id = event.effect_id
@@ -257,6 +268,8 @@ local function handleDynamicTrigger(event) -- Prefix # name # type # script_trig
         handle_mines_deploy_animation(event, trigger_name)
     elseif trigger_type == def.script_trigger_dynamic_type.mines_spawn_projectiles then
         handle_mines_spawn_projectiles(event, trigger_name, trigger_extra)
+    elseif trigger_type == def.script_trigger_dynamic_type.sentry_unfold_animation then
+        handle_sentry_unfold_animation(event, trigger_name)
     end
 end
 

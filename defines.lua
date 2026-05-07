@@ -14,6 +14,20 @@ return {
       end
    },
 
+   image_type = {
+      deploy_animation = "deploy_animation",
+      unfold_animation = "unfold_animation",
+      fly_animation = "fly_animation",
+      remote_icon = "remote_icon",
+      rise_animation = "rise_animation",
+      space_hub_item_icon = "space_hub_item_icon",
+      normal_sprite = "sprite"
+   },
+
+   get_image = function(name, type)
+      return "__Helldivers__/graphics/dynamic/" .. name .. "/" .. type .. ".png"
+   end,
+
    script_trigger = {
       hellpod_fall = _MOD_PREFIX .. "hellpod-fall-animation-script-trigger",
       hellpod_smash = _MOD_PREFIX .. "hellpod-smash-animation-script-trigger",
@@ -29,7 +43,8 @@ return {
       hellpod_spawn_result = "hellpod_spawn_entity",
       hellpod_rise_animation = "hellpod_rise_animation",
       mines_deploy_animation = "mines_deploy_animation",
-      mines_spawn_projectiles = "mines_spawn_projectiles"
+      mines_spawn_projectiles = "mines_spawn_projectiles",
+      sentry_unfold_animation = "sentry_unfold_animation",
    },
 
    script_trigger_effect_generated = function(base_name, type, extra)
@@ -105,6 +120,10 @@ return {
          return _MOD_PREFIX .. base_name .. "-hellpod_mines_deploy_animation"
       end,
 
+      hellpod_sentry_unfold_animation = function(base_name)
+         return _MOD_PREFIX .. base_name .. "-hellpod_sentry_unfold_animation"
+      end,
+
       mine_stream = function(base_name)
          return _MOD_PREFIX .. base_name .. "-mine_stream"
       end,
@@ -115,6 +134,10 @@ return {
 
       delayed_trigger_mines_deploy_animation = function(base_name)
          return _MOD_PREFIX .. base_name .. "-deploy_animation_delayed_trigger"
+      end,
+
+      delayed_trigger_sentry_unfold_animation = function(base_name)
+         return _MOD_PREFIX .. base_name .. "-unfold_animation_delayed_trigger"
       end,
 
       delayed_trigger_spawn = function(base_name)

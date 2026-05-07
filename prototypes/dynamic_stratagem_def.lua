@@ -5,11 +5,13 @@ local default = {
     --type = "hellpod", --  "hellpod" | "eagle" | "orbital",
     --name = def.MOD_PREFIX .. "unnamed-stratagem",
     range = 50,
-    cooldown = 10,
+    cooldown = 15,
     color = "white",  --  "white" | "red" | "green" | "blue"
     --icon = def.MOD_PATH_NAME .. "/graphics/icons/stratagems/remote_01.png",
     --arrows = {"Up", "RIGHT", "DOWN", "LEFT"}
 }
+
+
 
 local stratagems = {
     {
@@ -20,7 +22,7 @@ local stratagems = {
         color = "red",
         action = {
             type = "hellpod",
-            subtype = "turret",
+            subtype = "sentry",
             ammo = "normal ammo",
         }
     },
@@ -51,6 +53,17 @@ local stratagems = {
             type = "hellpod",
             subtype = "mines",
             mine_name = "fire-mine";
+        }
+    },
+    {
+        type = "hellpod",
+        name = def.prototype_names.hellpod_entities_short.sentry_autocannon,
+        arrows = {"DOWN", "DOWN", "DOWN", "DOWN"},
+        color = "red",
+        action = {
+            type = "hellpod",
+            subtype = "sentry",
+            ammo = { type = "item", name = "name", amount = 5 }
         }
     }
 }

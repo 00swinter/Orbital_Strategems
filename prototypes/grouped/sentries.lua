@@ -26,7 +26,7 @@ end
 
 local autocannon = table.deepcopy(data.raw["ammo-turret"]["gun-turret"])
 
-autocannon.name = "autocannon-turret"
+autocannon.name = def.prototype_names_generated.hellpod_entity(def.prototype_names.hellpod_entities_short.sentry_autocannon)
 
 autocannon.folded_animation = hd_autocannon_sheet {}
 autocannon.folding_animation = hd_autocannon_sheet { run_mode = "backward" }
@@ -40,7 +40,11 @@ autocannon.preparing_speed = 1
 autocannon.folding_speed = 1
 
 autocannon_shoot_sound = table.deepcopy(data.raw["gun"]["tank-cannon"].attack_parameters.sound)
-
+autocannon.flags = {
+    "placeable-player", 
+    "player-creation",
+    "placeable-off-grid"
+}
 autocannon.attack_parameters = {
     type = "projectile",
     ammo_category = "autocannon-ammo-category",
@@ -80,6 +84,6 @@ data:extend({
         subgroup = "stratagem-item-subgroup",
         order = "a[items]-b[stratagem-item]",
         stack_size = 150,
-        place_result = "autocannon-turret"
+        place_result = def.prototype_names_generated.hellpod_entity(def.prototype_names.hellpod_entities_short.sentry_autocannon)
     }
 })

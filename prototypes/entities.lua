@@ -14,7 +14,7 @@ data:extend({
 
 local space_hub = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-1"])
 
-local graphics = table.deepcopy(space_hub.graphics_set) 
+local graphics = table.deepcopy(space_hub.graphics_set)
 
 
 
@@ -139,7 +139,7 @@ data:extend({
   {
     type = "corpse",
     name = def.prototype_names.corpse.hellpod,
-    flags = {"placeable-neutral", "not-on-map"},
+    flags = { "placeable-neutral", "not-on-map" },
     icon = "__base__/graphics/icons/gun-turret.png",
     selectable_in_game = false,
     animation = {
@@ -150,8 +150,8 @@ data:extend({
         scale = 0.8
       }
     },
-    time_before_removed = 60*60,
-    time_before_shading_off = 60*57,
+    time_before_removed = 60 * 60,
+    time_before_shading_off = 60 * 57,
   },
   {
     type = "assembling-machine",
@@ -164,7 +164,7 @@ data:extend({
       render_no_power_icon = false,
       render_no_network_icon = false,
     },
-    crafting_categories = {"crafting"},
+    crafting_categories = { "crafting" },
     crafting_speed = 1,
     fixed_recipe = "space-hub-fixed-recipe",
     graphics_set = graphics,
@@ -186,6 +186,56 @@ data:extend({
         max = 0
       }
     }
+  },
+
+
+
+
+
+  {
+    type = "optimized-particle",
+    name = "hellpod-lid-particle",
+    pictures =
+    {
+      sheet =
+      {
+        filename = "__Helldivers__/graphics/animation/hellpod/lid_particle_variations.png",
+        line_length = 15,
+        frame_count = 15,
+        width = 128,
+        height = 128,
+        scale = 0.6,
+        variation_count = 4
+      }
+    },
+    life_time = 500,
+    fade_away_duration = 2,
+    ended_on_ground_trigger_effect =
+    {
+        type = "create-particle",
+        particle_name = "hellpod-lid-floor-particle",
+        initial_height = 0,
+        initial_vertical_speed = 0.03,
+    }
+  },
+  {
+    type = "optimized-particle",
+    name = "hellpod-lid-floor-particle",
+    pictures =
+    {
+      sheet =
+      {
+        filename = "__Helldivers__/graphics/animation/hellpod/lid_particle_floor_variations.png",
+        line_length = 1,
+        frame_count = 1,
+        width = 128,
+        height = 128,
+        scale = 0.6,
+        variation_count = 8
+      }
+    },
+    life_time = 1000,
+    fade_away_duration = 160
   }
-  
+
 })
